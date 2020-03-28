@@ -61,8 +61,6 @@ namespace StrategyGame
 
             var battle2 = new CavalryAttack<Bowman>(knights, bowmen);
             ToConsole(battle2.CountResults(), ConsoleColor.Green);
-
-
         }
     }
 

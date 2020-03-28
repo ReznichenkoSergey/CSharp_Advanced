@@ -31,6 +31,11 @@ namespace StrategyGame.Actions
             return total;
         }
 
+        public void G()
+        {
+            base.CountResults();
+        }
+
     }
 
 }
