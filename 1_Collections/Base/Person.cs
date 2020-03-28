@@ -9,9 +9,22 @@ namespace ITEA_Collections
 
         public int Q { get; set; }
 
-        //public override string ToString()
-        //{
-        //    return $"{Name}: {Age}";
-        //}
+        public Person()
+        {
+        }
+
+        public Person(string name, int age, int q)
+        {
+            Name = name;
+            Age = age;
+            Q = q;
+        }
+
+
+
+        public override string ToString()
+        {
+            return $"{Name}: {Age}, Q: {Q}";
+        }
     }
 }
