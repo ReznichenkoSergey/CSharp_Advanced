@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="IteaMessanger\Group.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\1_Collections\1_Collections.csproj" />
   </ItemGroup>
 
