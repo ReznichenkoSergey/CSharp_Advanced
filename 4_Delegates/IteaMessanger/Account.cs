@@ -69,6 +69,7 @@ namespace IteaDelegates.IteaMessanger
         /// <param name="group"></param>
         public void SendGroupMessage(Message message, Group group)
         {
+            message.Send = true;
             group.SendMessage(message);
         }
 
