@@ -150,12 +150,15 @@ namespace IteaLinq
             string userName = Console.ReadLine();
             if (!string.IsNullOrEmpty(userName))
             {
-                group.Messages
+                if (group.Messages.Any(x => x.From.Username.Equals(userName, StringComparison.InvariantCultureIgnoreCase)))
+                    group.Messages
                     .Where(x => x.From.Username.Equals(userName, StringComparison.InvariantCultureIgnoreCase))
                     .OrderByDescending(x => x.Created)
                     .Select(x => new { Date = x.Created, Content = x.ReadMessage(x.From) })
                     .ToList()
                     .ForEach((x) => ToConsole($"{userName}: {x.Date} - {x.Content}"));
+                else
+                    ToConsole($"Пользователь '{userName}' не отправлял сообщения!");
             }
 
             Console.ReadLine();
