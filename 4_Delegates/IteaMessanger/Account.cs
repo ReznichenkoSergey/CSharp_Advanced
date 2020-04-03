@@ -45,6 +45,61 @@ namespace IteaDelegates.IteaMessanger
                 ToConsole($"OnNewMessage: {message.From.Username}: {message.Preview}", ConsoleColor.DarkYellow);
         }
 
+        #region Group Mode
+
+        /// <summary>
+        /// Подписка на событие
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="isShortMessage"></param>        
+        public void Subscribe(Group group, bool isShortMessage)
+        {
+            if (isShortMessage)
+            {
+                group.OnSend += GroupShortMessage;
+                ToConsole($"{Username} was subscribed in the {group.Username}! Short type.", ConsoleColor.Yellow);
+            }
+            else
+            {
+                group.OnSend += GroupStandartMessage;
+                ToConsole($"{Username} was subscribed in the {group.Username}! Standart type.", ConsoleColor.DarkYellow);
+            }
+        }
+
+        /// <summary>
+        /// Отправка сообщения в группу
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="group"></param>
+        public void SendGroupMessage(Message message, Group group)
+        {
+            message.Send = true;
+            group.SendMessage(message);
+        }
+
+        /// <summary>
+        /// Стандартное уведомление
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void GroupStandartMessage(object sender, OnSendEventArgs e)
+        {
+            ToConsole($"Сообщение от {e.From}: {e.Text}", ConsoleColor.DarkYellow);
+        }
+
+        /// <summary>
+        /// Краткое уведомление
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void GroupShortMessage(object sender, OnSendEventArgs e)
+        {
+            ToConsole($"В группе {e.To} новое сообщение!", ConsoleColor.DarkYellow);
+        }
+
+        #endregion
+
+
         public void ShowDialog(string username)
         {
             List<Message> messageDialog = Messages

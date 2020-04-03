@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using IteaDelegates.IteaMessanger;
 using static ITEA_Collections.Common.Extensions;
 
 namespace IteaLinq
@@ -10,6 +10,8 @@ namespace IteaLinq
     {
         static void Main(string[] args)
         {
+            #region Comment
+
             //List<Person> people = GetPeople().ToList();
 
             //foreach (Person x in people)
@@ -44,20 +46,20 @@ namespace IteaLinq
 
             //var tenten = people.Skip(10).Take(10);
 
-            var anon = new
-            {
-                Name = "Anon",
-                Age = 21
-            };
+            //var anon = new
+            //{
+            //    Name = "Anon",
+            //    Age = 21
+            //};
 
-            var anon1 = new
-            {
-                Name = "Anon",
-                Age = "dwqd"
-            };
+            //var anon1 = new
+            //{
+            //    Name = "Anon",
+            //    Age = "dwqd"
+            //};
 
-            ToConsole(anon.Age.GetType().Name);
-            ToConsole(anon1.Age.GetType().Name);
+            //ToConsole(anon.Age.GetType().Name);
+            //ToConsole(anon1.Age.GetType().Name);
 
             //List<Person> people = new List<Person>
             //{
@@ -77,11 +79,91 @@ namespace IteaLinq
             //    .OrderByDescending(x => x.Age)
             //    .ShowAll();
 
+            #endregion
 
-        }
+            //Создание групп
+            List<Group> listGroup = new List<Group>();
+            listGroup.Add(new Group("Group #1"));
+            listGroup.Add(new Group("Group #2"));
+            
+            //Создание аккаунтов
+            List<Account> listAccount = new List<Account>();
+            for (int i = 0; i < 5; i++)
+            {
+                Account account = new Account($"User_{i}");
+                for (int j = 0; j < listGroup.Count; j++)
+                {
+                    account.Subscribe(listGroup[j], false);
+                }
+                listAccount.Add(account);
+            }
+            ToConsole("* Accounts were subscribed!\n", ConsoleColor.Cyan);
 
-        #region Create people list
-        public static IEnumerable<Person> GetPeople()
+            //Отправка сообщений            
+            Random random = new Random();
+            Message message1 = null;
+            for (int i = 0; i < listAccount.Count; i++)
+            {
+                int k = random.Next(3, 5);
+                for (int j = 0; j < k; j++)
+                {
+                    Account account = listAccount[i];
+                    //
+                    message1 = account.CreateMessage($"Your value is {random.Next(100)}!!!!", listGroup[0]);
+                    account.SendGroupMessage(message1, listGroup[0]);
+                    //
+                    message1 = account.CreateMessage($"Your value is {random.Next(100)}!!!!", listGroup[1]);
+                    account.SendGroupMessage(message1, listGroup[1]);                    
+                    //
+                    if ((i + 1) < listAccount.Count)
+                    {
+                        message1 = account.CreateMessage($"Your value is {random.Next(100)}!!!!", listAccount[i + 1]);
+                        account.Send(message1);
+                    }
+                }
+            }
+
+
+            //Вывод сообщений
+            //Выведите количество сообщений между каждым из адресатов пользователя (ключ – имя пользователя/группы, значение – количество сообщений).
+            ToConsole();
+            ToConsole($"** Кол-во сообщений от {listAccount[random.Next(0, listAccount.Count-1)].Username} **", ConsoleColor.Yellow);
+            listAccount[0].Messages
+                .GroupBy(x => x.To.Username)
+                .Select(y => new { Name = y.Key, Count = y.Count() })
+                .ToList()
+                .ForEach((x) => ToConsole($"{x.Name} - {x.Count}"));
+
+            //найдите 3 самых активных пользователей
+            ToConsole($"** 3 самых активных пользователя в группе {listGroup[0].Username} **", ConsoleColor.Yellow);
+            Group group = listGroup[random.Next(0, listGroup.Count - 1)];
+            group.Messages
+                .GroupBy(x => x.From.Username)
+                .Select(x => new { UserName = x.Key, Count = x.Count() })
+                .OrderByDescending(x => x.Count)
+                .Take(3)
+                .ToList()
+                .ForEach((x) => ToConsole($"{x.UserName} - {x.Count}"));
+
+            ToConsole();
+            ToConsole("Укажите имя пользователя для вывода статистики сообщений:", ConsoleColor.Green);
+            string userName = Console.ReadLine();
+            if (!string.IsNullOrEmpty(userName))
+            {
+                group.Messages
+                    .Where(x => x.From.Username.Equals(userName, StringComparison.InvariantCultureIgnoreCase))
+                    .OrderByDescending(x => x.Created)
+                    .Select(x => new { Date = x.Created, Content = x.ReadMessage(x.From) })
+                    .ToList()
+                    .ForEach((x) => ToConsole($"{userName}: {x.Date} - {x.Content}"));
+            }
+
+            Console.ReadLine();
+
+    }
+
+    #region Create people list
+    public static IEnumerable<Person> GetPeople()
         {
             for (int i = 0; i < 20; i++)
             {
