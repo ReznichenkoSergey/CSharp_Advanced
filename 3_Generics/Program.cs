@@ -1,4 +1,7 @@
-﻿using System;
+﻿using StrategyGame.Actions;
+using StrategyGame.Warriors.Models;
+using StrategyGame.Warriors.Models.Infantry;
+using System;
 using System.Collections.Generic;
 
 using static ITEA_Collections.Common.Extensions;
@@ -33,11 +36,31 @@ namespace StrategyGame
             ToConsole(battle3.CountResults(), ConsoleColor.Green);
             */
 
-            Guid a = new Guid();
-            Guid b = Guid.NewGuid();
+            //Guid a = new Guid();
+            //Guid b = Guid.NewGuid();
 
-            ToConsole($"{a}, {b}");
+            //ToConsole($"{a}, {b}");
 
+            
+            //сбор армий
+            List<Knight> knights = new List<Knight>();
+            for (int i = 0; i < 10; i++)
+                knights.Add(new Knight());
+
+            List<Gunner> gunners = new List<Gunner>();
+            for (int i = 0; i < 15; i++)
+                gunners.Add(new Gunner());
+
+            List<Bowman> bowmen = new List<Bowman>();
+            for (int i = 0; i < 18; i++)
+                bowmen.Add(new Bowman());
+
+            //Проверка батлов
+            var battle1 = new CavalryAttack<Gunner>(knights, gunners);
+            ToConsole(battle1.CountResults(), ConsoleColor.Green);
+
+            var battle2 = new CavalryAttack<Bowman>(knights, bowmen);
+            ToConsole(battle2.CountResults(), ConsoleColor.Green);
         }
     }
 

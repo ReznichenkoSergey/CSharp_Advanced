@@ -8,7 +8,7 @@ namespace IteaDelegates.IteaMessanger
 {
     public delegate void OnMessage(Message message);
     public delegate void OnSend(object sender, OnSendEventArgs e);
-
+    
     public class Account
     {
         public string Username { get; private set; }
@@ -38,6 +38,61 @@ namespace IteaDelegates.IteaMessanger
             message.To.NewMessage(message);
             OnSend?.Invoke(this, new OnSendEventArgs(message.ReadMessage(this), message.From.Username, message.To.Username));
         }
+
+
+        #region Group Mode
+
+        /// <summary>
+        /// Подписка на событие
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="isShortMessage"></param>        
+        public void Subscribe(Group group, bool isShortMessage)
+        {
+            if (isShortMessage)
+            {
+                group.OnSend += GroupShortMessage;
+                ToConsole($"{Username} was subscribed in the {group.Name}! Short type.", ConsoleColor.Yellow);
+            }
+            else
+            {
+                group.OnSend += GroupStandartMessage;
+                ToConsole($"{Username} was subscribed in the {group.Name}! Standart type.", ConsoleColor.DarkYellow);
+            }
+        }
+
+        /// <summary>
+        /// Отправка сообщения в группу
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="group"></param>
+        public void SendGroupMessage(Message message, Group group)
+        {
+            message.Send = true;
+            group.SendMessage(message);
+        }
+
+        /// <summary>
+        /// Стандартное уведомление
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void GroupStandartMessage(object sender, OnSendEventArgs e)
+        {
+            ToConsole($"Сообщение от {e.From}: {e.Text}", ConsoleColor.DarkYellow);
+        }
+
+        /// <summary>
+        /// Краткое уведомление
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void GroupShortMessage(object sender, OnSendEventArgs e)
+        {
+            ToConsole($"В группе {e.To} новое сообщение!", ConsoleColor.DarkYellow);
+        }
+
+        #endregion
 
         public void OnNewMessage(Message message)
         {
