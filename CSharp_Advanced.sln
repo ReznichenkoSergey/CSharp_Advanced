@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "4_Delegates", "4_Delegates\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "5_LINQ", "5_LINQ\5_LINQ.csproj", "{390F0ADA-44A2-4BEA-BDB3-3FAC3D2B0698}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "6_LINQ_to_SQL", "6_LINQ_to_SQL\6_LINQ_to_SQL.csproj", "{BFC6025E-EF40-4464-827B-EA37278CC482}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{390F0ADA-44A2-4BEA-BDB3-3FAC3D2B0698}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{390F0ADA-44A2-4BEA-BDB3-3FAC3D2B0698}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{390F0ADA-44A2-4BEA-BDB3-3FAC3D2B0698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFC6025E-EF40-4464-827B-EA37278CC482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFC6025E-EF40-4464-827B-EA37278CC482}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFC6025E-EF40-4464-827B-EA37278CC482}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFC6025E-EF40-4464-827B-EA37278CC482}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

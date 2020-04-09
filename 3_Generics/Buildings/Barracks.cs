@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using StrategyGame.Buildings.Intrefaces;
+using StrategyGame.Warriors.Abstractions;
 using StrategyGame.Warriors.Models.Infantry;
 
 namespace StrategyGame.Buildings
 {
 
-    public class Barracks
+    public class Barracks<T> : IBuilding<T> where T : CombatUnit
     {
         public readonly Dictionary<Type, int> warriorsCost = new Dictionary<Type, int>
         {
@@ -16,5 +17,7 @@ namespace StrategyGame.Buildings
         };
 
         protected Barracks() { }
+
+        public T SomeProp { get; set; }
     }
 }

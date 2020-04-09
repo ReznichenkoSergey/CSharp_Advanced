@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 
 using ITEA_Collections.CustomCollections;
 using ITEA_Collections.GenericLinkedList;
+
 using static ITEA_Collections.Common.Extensions;
 
 namespace ITEA_Collections
@@ -60,7 +61,7 @@ namespace ITEA_Collections
                 Console.WriteLine(item);
             }
             Console.WriteLine();
-            iteaCollection.Add("asdasd");
+            // iteaCollection.Add("asdasd");
             foreach (var item in strings) // вызов 2
             {
                 Console.WriteLine(item);
