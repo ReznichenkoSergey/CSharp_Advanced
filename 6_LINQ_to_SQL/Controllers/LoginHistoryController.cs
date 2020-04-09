@@ -58,6 +58,7 @@ namespace IteaLinqToSql.Controllers
                 .ToList();
         }
 
+
         [HttpGet("maxdate")]
         public List<LoginHistory> GetMaxDate()
         {
