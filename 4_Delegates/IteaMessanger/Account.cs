@@ -12,7 +12,7 @@ namespace IteaDelegates.IteaMessanger
     public class Account
     {
         public string Username { get; private set; }
-        public List<Message> Messages { get; set; }
+        public List<Message> Messages { get; set; } = new List<Message>();
 
         public event OnSend OnSend;
 
@@ -21,7 +21,6 @@ namespace IteaDelegates.IteaMessanger
         public Account(string username)
         {
             Username = username;
-            Messages = new List<Message>();
             NewMessage += OnNewMessage;
         }
 
@@ -100,7 +99,63 @@ namespace IteaDelegates.IteaMessanger
             if (message.Send)
                 ToConsole($"OnNewMessage: {message.From.Username}: {message.Preview}", ConsoleColor.DarkYellow);
         }
-        
+
+
+        #region Group Mode
+
+        /// <summary>
+        /// Подписка на событие
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="isShortMessage"></param>        
+        public void Subscribe(Group group, bool isShortMessage)
+        {
+            if (isShortMessage)
+            {
+                group.OnSend += GroupShortMessage;
+                ToConsole($"{Username} was subscribed in the {group.Username}! Short type.", ConsoleColor.Yellow);
+            }
+            else
+            {
+                group.OnSend += GroupStandartMessage;
+                ToConsole($"{Username} was subscribed in the {group.Username}! Standart type.", ConsoleColor.DarkYellow);
+            }
+        }
+
+        /// <summary>
+        /// Отправка сообщения в группу
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="group"></param>
+        public void SendGroupMessage(Message message, Group group)
+        {
+            message.Send = true;
+            group.SendMessage(message);
+        }
+
+        /// <summary>
+        /// Стандартное уведомление
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void GroupStandartMessage(object sender, OnSendEventArgs e)
+        {
+            ToConsole($"Сообщение от {e.From}: {e.Text}", ConsoleColor.DarkYellow);
+        }
+
+        /// <summary>
+        /// Краткое уведомление
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void GroupShortMessage(object sender, OnSendEventArgs e)
+        {
+            ToConsole($"В группе {e.To} новое сообщение!", ConsoleColor.DarkYellow);
+        }
+
+        #endregion
+
+
         public void ShowDialog(string username)
         {
             List<Message> messageDialog = Messages
@@ -116,6 +171,22 @@ namespace IteaDelegates.IteaMessanger
                     message.From.Username.Equals(username) ? ConsoleColor.Cyan : ConsoleColor.DarkYellow);
             }
             ToConsole($"---{string.Concat(str.Select(x => "-"))}---");
+        }
+
+        public void SubscribeToChannel(Channel channel, bool silentMode)
+        {
+            if (channel.Subscribers.Any(account => account.Username == Username))
+            {
+                ToConsole("You have already subscribed");
+                return;
+            }
+
+            channel.AddSubscriber(this);
+
+            if (silentMode)
+                channel.NewMessage += m => ToConsole($"New message from channel {channel.Name}");
+            else
+                channel.NewMessage += m => ToConsole($"{channel.Name}: {m}");
         }
     }
 }

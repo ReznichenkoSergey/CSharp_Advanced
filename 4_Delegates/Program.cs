@@ -32,13 +32,6 @@ namespace IteaDelegates
             //MathOperation minus = (a, b) => a - b;
             //MathOperation miltiply = (a, b) => a * b;
             //MathOperation divide = (arg1, arg2) => arg1 / arg2;
-
-            //PersonUpdate update = (p) => p.Q++; // 1 in chain
-            //update += (p) => p.Age--; // 2 in chain 
-            //update += update; // 4 in chain
-            //update += update; // 8 in chain
-            //update += (p) => Console.WriteLine(p.ToString());
-
             //Person person = new Person("QWERTY", 25, 0);
             //update(person);
 
