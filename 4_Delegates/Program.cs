@@ -61,13 +61,17 @@ namespace IteaDelegates
 
             Console.WriteLine();
             Console.WriteLine("* Sending a message ...\n");
-            Message message1 = account1.CreateMessage($"Your value is {random.Next(100)}!!!!", account1);
-            account1.SendGroupMessage(message1, group1);
 
-            Console.WriteLine();
-            Console.WriteLine("* Sending a message ...\n");
-            message1 = account1.CreateMessage($"Your value is {random.Next(100)}!!!!", account1);
-            account1.SendGroupMessage(message1, group1);
+            Message message1 = null;
+            for (int i = 0; i < 10; i++)
+            {                
+                message1 = account1.CreateMessage($"Your value is {random.Next(100)}!!!!", account1);
+                account1.SendGroupMessage(message1, group1);
+                Console.WriteLine();
+            }
+            
+            Console.WriteLine("* Load messages from the group ...\n");
+            group1.ShowDialog();
 
             Console.ReadLine();
         }
