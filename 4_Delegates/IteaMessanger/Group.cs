@@ -6,29 +6,29 @@ using static ITEA_Collections.Common.Extensions;
 
 namespace IteaDelegates.IteaMessanger
 {
-    public class Group
+    public class Group : Account
     {
         ///
         /// Название группы
         ///
-        public string Name { get; private set; }
+        //public string Name { get; private set; }
 
         ///
         ///Список сообщений 
         ///
-        public List<Message> Messages { get; private set; }
+        //public  List<Message> Messages { get; private set; }
 
-        public event OnSend OnSend;
+        public new event OnSend OnSend;
 
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="name">Название группы</param>
-        public Group(string name)
+        public Group(string name) : base(name)
         {
-            Name = name;
+            //Name = name;
             this.Messages = new List<Message>();
-            ToConsole($"Group {Name} was created!", ConsoleColor.Green);
+            ToConsole($"Group {Username} was created!", ConsoleColor.Green);
         }
 
         /// <summary>
@@ -38,13 +38,13 @@ namespace IteaDelegates.IteaMessanger
         public void SendMessage(Message message)
         {
             this.Messages.Add(message);
-            OnSend?.Invoke(this, new OnSendEventArgs(message.ReadMessage(message.From), message.From.Username, Name));
+            OnSend?.Invoke(this, new OnSendEventArgs(message.ReadMessage(message.From), message.From.Username, Username));
         }
 
         ///
         ///Вывод всех сообщений
         ///
-        public void ShowDialog()
+        public void ShowAllMessages()
         {
             var messageDialog = Messages
                 .OrderBy(x => x.Created)
@@ -61,7 +61,7 @@ namespace IteaDelegates.IteaMessanger
         ///
         ///Вывод всех сообщений по имени отправителя
         ///
-        public void ShowDialog(string username)
+        public void ShowMessagesByUser(string username)
         {
             List<Message> messageDialog = Messages
                 .Where(x => x.From.Username.Equals(username))
