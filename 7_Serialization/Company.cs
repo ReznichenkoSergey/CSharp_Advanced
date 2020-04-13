@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace IteaSerialization
 {
+    [Serializable]
     public class Company : IModel, ILinkUpdate
     {
         public Guid Id { get; set; }

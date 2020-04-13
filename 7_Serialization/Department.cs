@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 
 namespace IteaSerialization
 {
+    [Serializable]
     public class Department : IModel, ILinkUpdate
     {
         public Guid Id { get; set; }
@@ -17,16 +18,15 @@ namespace IteaSerialization
         public Company Company;
         protected Department() { }
 
-        /// <summary>
-        /// Set company for department
-        /// </summary>
-        /// <param name="name"></param>
         public Department(string name)
         {
             Id = Guid.NewGuid();
             Name = name;
         }
 
+        ///
+        ///Set company for department
+        ///
         public Department(string name, Company company) : this(name)
         {
             SetCompany(company);
