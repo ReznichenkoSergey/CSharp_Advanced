@@ -22,9 +22,10 @@ namespace IteaSerialization
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
+        
         [JsonIgnore]
         [XmlIgnore]
-        public Company Company { get; set; }
+        public Department Department { get; set; }
 
         protected Person() { }
 
@@ -43,13 +44,13 @@ namespace IteaSerialization
         }
 
         /// <summary>
-        /// Set company for person
+        /// Set department for person
         /// </summary>
-        /// <param name="company">Company to set</param>
-        public void SetCompany(Company company)
+        /// <param name="department"></param>
+        public void SetDepartment(Department department)
         {
-            Company = company;
-            Company.People.Add(this);
+            Department = department;
+            Department.Persons.Add(this);
         }
 
         public override string ToString()
@@ -60,6 +61,22 @@ namespace IteaSerialization
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Person)
+            {
+                Person temp = (Person)obj;
+                return
+                    (Id == temp.Id) &&
+                    Name.Equals(temp.Name, StringComparison.InvariantCultureIgnoreCase)&&
+                    (Gender == temp.Gender) &&
+                    (Age == temp.Age) &&
+                    Email.Equals(temp.Email);
+            }
+            else
+                return base.Equals(obj);
         }
     }
 }

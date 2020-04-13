@@ -16,11 +16,11 @@ namespace IteaSerialization
     {
         static void Main(string[] args)
         {
-        //    ReadFromFile("example.txt");
-        //    WriteToFile("example1.txt", "Some data");
-        //    AppendToFile("example1.txt", "1");
-        //    ToConsole(ReadFromFile("example.txt", ""));
-            Person person = new Person("Alex", Gender.Man, 21, "alexs98@gmail.com");
+            //    ReadFromFile("example.txt");
+            //    WriteToFile("example1.txt", "Some data");
+            //    AppendToFile("example1.txt", "1");
+            //    ToConsole(ReadFromFile("example.txt", ""));
+            /*Person person = new Person("Alex", Gender.Man, 21, "alexs98@gmail.com");
             List<Person> people = new List<Person>
             {
                 new Person("Pol", Gender.Man, 37, "pol@gmail.com"),
@@ -47,6 +47,107 @@ namespace IteaSerialization
             JsonSerialize("microsoftJson", microsoft);
             JsonSerialize("appleJson", apple);
             Company appleFromFile = JsonDeserialize("appleJson");
+            */
+            //Создание сотрудников
+            List<Person> people = new List<Person>
+            {
+                new Person("Alex", Gender.Man, 21, "alexs98@gmail.com"),
+                new Person("Pol", Gender.Man, 37, "pol@gmail.com"),
+                new Person("Ann", Gender.Woman, 25, "ann@yahoo.com"),
+                new Person("Sonya", Gender.Woman, 21, "sonya@gmail.com"),
+                new Person("Harry", Gender.Man, 58, "harry@yahoo.com"),
+                new Person("Germiona", Gender.Woman, 18, "germiona@gmail.com"),
+                new Person("Ron", Gender.Man, 24, "ron@yahoo.com"),
+                new Person("John", Gender.Man, 42, "john@yahoo.com"),
+                new Person("Mary", Gender.Woman, 42, "mary@gmail.com"),
+            };
+
+            //Создание компании
+            Company company = new Company("CTCom Ltd");
+
+            //Создание филиалов, заполнение сотрудниками, заполнение компании
+            Department depAccountant = new Department("Accountants", company);
+            people
+                .Take(3)
+                .ToList()
+                .ForEach(x => { x.SetDepartment(depAccountant); });
+
+            Department depManager = new Department("Managers", company);
+            people
+                .Skip(3)
+                .Take(2)
+                .ToList()
+                .ForEach(x => { x.SetDepartment(depManager); });
+
+            Department depITDeveloper = new Department("ITDevelopers", company);
+            people
+                .Skip(5)
+                .ToList()
+                .ForEach(x => { x.SetDepartment(depITDeveloper); });
+
+            string fileName = "Data.json";
+
+            //Сериализация и сохранение объекта в файл
+            SaveToJsonFile(fileName, company);
+
+            //Десериализация строки в объект Company
+            Company temp = OpenJsonFile<Company>(fileName);
+
+            //Сравнение объктов
+            ToConsole("Comparing states ...");
+            if (temp.Equals(company))
+                ToConsole("Object's states after serialization are equal", ConsoleColor.Yellow);
+            else
+                ToConsole("Object's states after serialization are not Equal", ConsoleColor.Red);
+
+            Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Сериализация и сохранение в файл
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="content"></param>
+        private static void SaveToJsonFile<T>(string path, T obj)
+            where T: class, IModel
+        {
+            try
+            {
+                var content = JsonConvert.SerializeObject(obj, Formatting.Indented);
+                using (var file = new StreamWriter(path, false))
+                {
+                    file.Write(content.ToArray());
+                }
+                ToConsole("Serialization result:");
+                ToConsole(content, ConsoleColor.Green);
+            }
+            catch (Exception ex)
+            {
+                ToConsole($"Error (SaveToJsonFile): {ex.Message}", ConsoleColor.Red);
+            }
+        }
+
+        private static T OpenJsonFile<T>(string path) 
+            where T:class, IModel
+        {
+            T temp = null;
+            try
+            {
+                using (var file = new StreamReader(path))
+                {
+                    var fileContent = file.ReadToEnd();
+                    temp = JsonConvert.DeserializeObject<T>(fileContent);
+                    if(typeof(T).Equals(typeof(ILinkUpdate)))
+                    {
+                        (temp as ILinkUpdate).UpdateLinks();
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                ToConsole($"Error (OpenJsonFile): {ex.Message}", ConsoleColor.Red);
+            }
+            return temp;
         }
 
         #region Serialization
