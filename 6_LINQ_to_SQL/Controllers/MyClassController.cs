@@ -13,12 +13,12 @@ namespace IteaLinqToSql.Controllers
     [ApiController]
     public class MyClassController : ControllerBase
     {
-        List<MyClass> ts = new List<MyClass>
+        /*List<MyClass> ts = new List<MyClass>
             {
                 new MyClass{ Id = 1, Cipher ="Cipher1", Age= 20, Comment = "Comment1"},
                 new MyClass{ Id = 2,Cipher ="Cipher2", Age= 20, Comment = "Comment2"},
                 new MyClass{ Id = 3,Cipher ="Cipher3", Age= 20, Comment = "Comment3"}
-            };
+            };*/
 
         readonly IService<MyClass> service;
 
@@ -30,19 +30,29 @@ namespace IteaLinqToSql.Controllers
         [HttpGet]
         public List<MyClass> Get()
         {
-            return ts;
+            //return ts;
+            return service
+                .GetQuery()
+                .ToList();
         }
 
         [HttpGet("{id}")]
         public MyClass Get(int id)
         {
-            return ts.Where(x=>x.Id == id).SingleOrDefault();
+            //return ts.Where(x=>x.Id == id).SingleOrDefault();
+            return service
+                .GetQuery()
+                .Where(x=>x.Id == id)
+                .SingleOrDefault();
         }
 
         [HttpPost("save")]
         public List<MyClass> Post([FromBody] MyClass value)
         {
-            return ts;
+            //return ts;
+            return service
+                .GetQuery()
+                .ToList();
         }
 
         [HttpPut("{id}")]

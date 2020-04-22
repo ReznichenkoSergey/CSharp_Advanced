@@ -93,8 +93,12 @@ namespace IteaAsync
             string line = await GetMyClassList($"{url}");
             List<MyClass> ListMyClasses = JsonConvert.DeserializeObject<List<MyClass>>(line);
 
+            ListMyClasses.ForEach(x => Console.WriteLine($"Cipher= {x.Cipher}"));
+
             string single = await GetMyClassSingle($"{url}/{id}");
             MyClass myClassSingle = JsonConvert.DeserializeObject< MyClass>(single);
+
+            Console.WriteLine($"\r\n Single: \r\nCipher= {myClassSingle.Cipher}");
 
             Console.ReadLine();
         }
