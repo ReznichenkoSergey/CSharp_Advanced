@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using IteaLinqToSql.Models.Entities;
@@ -6,55 +7,59 @@ using IteaLinqToSql.Models.Interfaces;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace IteaLinqToSql.Controllers
 {
-    [Route("api/user")]
+    [Route("api/game")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class GameSaveController : ControllerBase
     {
-        readonly IService<User> service;
+        readonly IService<GameSave> service;
 
-        public UserController(IService<User> service)
+        public GameSaveController(IService<GameSave> service)
         {
             this.service = service;
         }
 
         [HttpGet]
-        public List<User> Get()
+        public List<GameSave> Get()
         {
             return service
                 .GetQuery()
-                .Include(x => x.Logins)
-                .Where(x => x.Logins.Count > 0)
                 .ToList();
         }
 
         [HttpGet("{id}")]
-        public User Get(int id)
+        public GameSave Get(int id)
         {
             return service.FindById(id);
         }
 
         [HttpPost("save")]
-        public List<User> Post([FromBody] User value)
+        public List<GameSave> Post([FromBody] GameSave value)
         {
             return service
                 .GetAll()
-                .Where(x => x.Email.Contains(value.Email) ||
-                            x.Username.Contains(value.Username) ||
-                            x.Id == value.Id)
+                .Where(x => x.Id == value.Id)
                 .ToList();
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {            
+        [HttpPut()]
+        public int Put(GameSave value)
+        {
+            service.Create(value);
+            return value.Id;
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            GameSave gameSave = service.FindById(id);
+            if (gameSave != null)
+            {
+                service.Delete(gameSave);
+            }
         }
     }
 }

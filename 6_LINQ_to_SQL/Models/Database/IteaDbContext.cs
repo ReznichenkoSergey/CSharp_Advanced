@@ -9,6 +9,8 @@ namespace IteaLinqToSql.Models.Database
         public DbSet<User> Users { get; set; }
         public DbSet<LoginHistory> Logins { get; set; }
 
+        public DbSet<GameSave> GameSave { get; set; }
+
         public IteaDbContext(DbContextOptions<IteaDbContext> options) : base(options)
         {
             //ChangeTracker.AutoDetectChangesEnabled = false;
