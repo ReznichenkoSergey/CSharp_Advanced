@@ -71,7 +71,7 @@ namespace IteaDelegates
             }
             
             Console.WriteLine("* Load messages from the group ...\n");
-            group1.ShowDialog();
+            group1.ShowDialog("");
 
             Console.ReadLine();
         }

@@ -22,7 +22,7 @@ namespace IteaAsync
         static List<string> strings = new List<string>();
         static async Task Main(string[] args)
         {
-            Task<string> allUsersString = GetUserAsync();
+            /*Task<string> allUsersString = GetUserAsync();
             int count = 1;
             Task<User>[] taskArray = Enumerable.Repeat(0, 3).Select(x => GetUserByIdAsync(count++)).ToArray();
 
@@ -69,8 +69,7 @@ namespace IteaAsync
             }
             catch (OperationCanceledException) { }
             Console.WriteLine(toConsole.IsCompletedSuccessfully);
-
-            Console.WriteLine("The End!");
+            */
 
 
             //Action<string> action = delegate (string item) 
@@ -87,9 +86,36 @@ namespace IteaAsync
 
             //ints.ToFile("ints.txt");
             //strings.ToFile("string.txt");
+
+            string url = "http://localhost:5000/api/myclass";
+            int id = 1;
+
+            string line = await GetMyClassList($"{url}");
+            List<MyClass> ListMyClasses = JsonConvert.DeserializeObject<List<MyClass>>(line);
+
+            string single = await GetMyClassSingle($"{url}/{id}");
+            MyClass myClassSingle = JsonConvert.DeserializeObject< MyClass>(single);
+
+            Console.ReadLine();
         }
 
-        public static void Ac(string item)
+
+
+        private async static Task<string> GetMyClassList(string url)
+        {
+            Uri uri = new Uri(url);
+            var savesAsync = await client.GetAsync(uri, HttpCompletionOption.ResponseContentRead);
+            return await savesAsync.Content.ReadAsStringAsync();
+        }
+
+        private async static Task<string> GetMyClassSingle(string url)
+        {
+            Uri uri = new Uri(url);
+            var savesAsync = await client.GetAsync(uri, HttpCompletionOption.ResponseContentRead);
+            return await savesAsync.Content.ReadAsStringAsync();
+        }
+
+        /*public static void Ac(string item)
         {
             if (int.TryParse(item, out int i)) ints.Add(i);
             else strings.Add(item);
@@ -108,9 +134,9 @@ namespace IteaAsync
                 Console.WriteLine($"\n{ex.Message}\n");
                 return "";
             }
-        }
+        }*/
 
-        public static async Task<User> GetUserByIdAsync(int id)
+        /*public static async Task<User> GetUserByIdAsync(int id)
         {
             try
             {
@@ -163,6 +189,6 @@ namespace IteaAsync
         public static void Double(ref int a)
         {
             a *= 2;
-        }
+        }*/
     }
 }
