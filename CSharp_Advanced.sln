@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1000
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lesson_1", "Lesson_1\Lesson_1.csproj", "{01BE51C7-A5B8-421F-9BFC-FEA62B4822DE}"
 EndProject
@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "6_LINQ_to_SQL", "6_LINQ_to_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "7_Serialization", "7_Serialization\7_Serialization.csproj", "{F0055859-888F-48F2-8922-F5AEA3B015D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "8_Async", "8_Async\8_Async.csproj", "{1505B795-9DDF-4D9D-B1E5-17F290A49FD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "8_Async", "8_Async\8_Async.csproj", "{1505B795-9DDF-4D9D-B1E5-17F290A49FD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "9_Threads", "9_Threads\9_Threads.csproj", "{F10D3976-7881-4507-9723-87C79AE28209}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{1505B795-9DDF-4D9D-B1E5-17F290A49FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1505B795-9DDF-4D9D-B1E5-17F290A49FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1505B795-9DDF-4D9D-B1E5-17F290A49FD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F10D3976-7881-4507-9723-87C79AE28209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F10D3976-7881-4507-9723-87C79AE28209}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F10D3976-7881-4507-9723-87C79AE28209}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F10D3976-7881-4507-9723-87C79AE28209}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

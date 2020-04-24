@@ -6,8 +6,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-using IteaLinq;
-
 using IteaLinqToSql.Models.Entities;
 
 using Newtonsoft.Json;
@@ -20,11 +18,14 @@ namespace IteaAsync
 
         static List<int> ints = new List<int>();
         static List<string> strings = new List<string>();
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
+            Example(1, "", "wdqwd", "ecsdc", 2.ToString());
+
             Task<string> allUsersString = GetUserAsync();
-            int count = 1;
-            Task<User>[] taskArray = Enumerable.Repeat(0, 3).Select(x => GetUserByIdAsync(count++)).ToArray();
+
+            int count = 0;
+            Task<User>[] taskArray = Enumerable.Repeat(0, 3).Select(x => GetUserByIdAsync(++count)).ToArray();
 
             Enumerable
                 .Repeat(0, 1000)
@@ -32,43 +33,51 @@ namespace IteaAsync
                 .ToList()
                 .ForEach(x => Console.WriteLine($"Here we have {x}"));
 
-            User[] users = await Task.WhenAll(taskArray);
+            User[] users = Task.WhenAll(taskArray).GetAwaiter().GetResult();
 
             users.ToList().ForEach(x => Console.WriteLine(x?.ToString()));
-            string allUsersResult = await allUsersString;
+            string allUsersResult = GetUserAsync().GetAwaiter().GetResult();
 
-            List<Person> people = new List<Person>
-            {
-                new Person("Pol", Gender.Man, 37, "pol@gmail.com"),
-                new Person("Ann", Gender.Woman, 25, "ann@yahoo.com"),
-                new Person("Alex", Gender.Man, 21, "alex@gmail.com"),
-                new Person("Harry", Gender.Man, 58, "harry@yahoo.com"),
-                new Person("Germiona", Gender.Woman, 18, "germiona@gmail.com"),
-                new Person("Ron", Gender.Man, 24, "ron@yahoo.com"),
-                new Person("Etc1", Gender.etc, 42, "etc1@yahoo.com"),
-                new Person("Etc2", Gender.etc, 42, "etc2@gmail.com"),
-            };
+            //List<Person> people = new List<Person>
+            //{
+            //    new Person("Pol", Gender.Man, 37, "pol@gmail.com"),
+            //    new Person("Ann", Gender.Woman, 25, "ann@yahoo.com"),
+            //    new Person("Alex", Gender.Man, 21, "alex@gmail.com"),
+            //    new Person("Harry", Gender.Man, 58, "harry@yahoo.com"),
+            //    new Person("Germiona", Gender.Woman, 18, "germiona@gmail.com"),
+            //    new Person("Ron", Gender.Man, 24, "ron@yahoo.com"),
+            //    new Person("Etc1", Gender.etc, 42, "etc1@yahoo.com"),
+            //    new Person("Etc2", Gender.etc, 42, "etc2@gmail.com"),
+            //};
 
             CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
             CancellationToken token = cancelTokenSource.Token;
 
-            Func<Task> action = async () =>
+            Task toConsole = WriteToConsole(token);
+            Func<Task> cancellation = async () =>
             {
                 await Task.Delay(2500);
                 cancelTokenSource.Cancel();
             };
 
-            Task toConsole = WriteToConsole(token);
+            Func<Task> checkState = async () =>
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    await Task.Delay(1);
+                    Console.WriteLine($"status: {toConsole.Status}");
+                }
+            };
 
-            Task cancel = action();
+            Task cancel = cancellation();
 
-            await cancel;
+            cancel.GetAwaiter().GetResult();
             try
             {
-                await toConsole;
+                toConsole.GetAwaiter().GetResult();
             }
             catch (OperationCanceledException) { }
-            Console.WriteLine(toConsole.IsCompletedSuccessfully);
+            Console.WriteLine($"IsCompletedSuccessfully: {toConsole.IsCompletedSuccessfully}");
 
             Console.WriteLine("The End!");
 
@@ -87,6 +96,7 @@ namespace IteaAsync
 
             //ints.ToFile("ints.txt");
             //strings.ToFile("string.txt");
+
         }
 
         public static void Ac(string item)
@@ -163,6 +173,11 @@ namespace IteaAsync
         public static void Double(ref int a)
         {
             a *= 2;
+        }
+
+        public static void Example(int i, params string[] par)
+        {
+            foreach (var item in par) Console.WriteLine(item);
         }
     }
 }
