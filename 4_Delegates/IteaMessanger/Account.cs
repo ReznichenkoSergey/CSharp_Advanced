@@ -52,12 +52,12 @@ namespace IteaDelegates.IteaMessanger
             if (isShortMessage)
             {
                 group.OnSend += GroupShortMessage;
-                ToConsole($"{Username} was subscribed in the {group.Name}! Short type.", ConsoleColor.Yellow);
+                ToConsole($"{Username} was subscribed in the {group.Username}! Short type.", ConsoleColor.Yellow);
             }
             else
             {
                 group.OnSend += GroupStandartMessage;
-                ToConsole($"{Username} was subscribed in the {group.Name}! Standart type.", ConsoleColor.DarkYellow);
+                ToConsole($"{Username} was subscribed in the {group.Username}! Standart type.", ConsoleColor.DarkYellow);
             }
         }
 
@@ -107,7 +107,7 @@ namespace IteaDelegates.IteaMessanger
         /// </summary>
         /// <param name="group"></param>
         /// <param name="isShortMessage"></param>        
-        public void Subscribe(Group group, bool isShortMessage)
+        /*public void Subscribe(Group group, bool isShortMessage)
         {
             if (isShortMessage)
             {
@@ -150,7 +150,7 @@ namespace IteaDelegates.IteaMessanger
         public void GroupShortMessage(object sender, OnSendEventArgs e)
         {
             ToConsole($"В группе {e.To} новое сообщение!", ConsoleColor.DarkYellow);
-        }
+        }*/
 
         #endregion
 

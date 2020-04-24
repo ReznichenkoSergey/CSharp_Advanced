@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
-
+using ITEA_Collections.Common;
 using IteaAsync;
 
 namespace IteaThreads
@@ -21,11 +23,11 @@ namespace IteaThreads
 
         static void Main(string[] args)
         {
-            Process current = Process.GetCurrentProcess();
+            /*Process current = Process.GetCurrentProcess();
             Console.WriteLine($"Id: {current.Id}");
             Console.WriteLine($"Process name: {current.ProcessName}");
             Console.WriteLine($"MachineName: {current.MachineName}");
-            Console.WriteLine($"PrivateMemorySize64: {current.PrivateMemorySize64}");
+            Console.WriteLine($"PrivateMemorySize64: {current.PrivateMemorySize64}");*/
             //Console.WriteLine("Kill Chrome? (Y - yes, else - no)", ConsoleColor.Red);
             //if (Console.ReadKey().Key == ConsoleKey.Y)
             //    Process
@@ -49,7 +51,7 @@ namespace IteaThreads
 
             //Thread.CurrentThread.Name = "Main";
             //Thread.CurrentThread.Priority = ThreadPriority.Highest;
-
+            /*
             ThreadStart threadStart1 = Write;
 
             Thread thread1 = new Thread(threadStart1)
@@ -64,7 +66,7 @@ namespace IteaThreads
 
             thread1.Start();
             thread2.Start();
-
+            */
             //new Thread(new ParameterizedThreadStart(WriteFromTo)) // new Thread(WriteFromTo)
             //{
             //    Priority = ThreadPriority.AboveNormal,
@@ -95,10 +97,86 @@ namespace IteaThreads
             //mt1.thread.Join();
             //mt2.thread.Join();
 
-            //Console.ReadLine();
+            Console.WriteLine("Select an action. Tab the action number:");
+
+            Console.WriteLine("1. Simple method");
+            Console.WriteLine("2. Semaphore using");
+            Console.WriteLine("3. Locker using\r\n");
+            Console.WriteLine("0. All types\r\n");
+
+            string key = Console.ReadLine();
+
+            MyClass myClass = new MyClass(100);
+            if (int.TryParse(key, out int index))
+            {
+                Console.Clear();
+                switch (index)
+                {
+                    case 1:
+                        //Test1
+                        Console.WriteLine("\r\nTest Simple#1\r\n");
+                        myClass.RunTest(MethodType.Simple);
+                        Console.ReadKey();
+
+                        //Test 2
+                        Console.WriteLine("\r\nTest Simple#2\r\n");
+                        myClass.RunTest(MethodType.Simple);
+                        break;
+                    case 2:
+                        //Test 1
+                        Console.WriteLine("\r\nTest Semaphore(5,5)#1\r\n");
+                        myClass.RunTest(MethodType.Semaphore, 5, 5);
+                        Console.ReadKey();
+
+                        //Test 2
+                        Console.WriteLine("\r\nTest Semaphore(1,5)#2\r\n");
+                        myClass.RunTest(MethodType.Semaphore, 1, 5);
+                        break;
+                    case 3:
+                        //Test 1
+                        Console.WriteLine("\r\nTest Locker#1\r\n");
+                        myClass.RunTest(MethodType.Locker);
+                        Console.ReadKey();
+
+                        //Test 2
+                        Console.WriteLine("\r\nTest Locker#2\r\n");
+                        myClass.RunTest(MethodType.Locker);
+                        break;
+                    case 0:
+                        //Test1
+                        Console.WriteLine("\r\nTest Simple#1\r\n");
+                        myClass.RunTest(MethodType.Simple);
+                        Console.ReadKey();
+
+                        //Test 2
+                        Console.WriteLine("\r\nTest Simple#2\r\n");
+                        myClass.RunTest(MethodType.Simple);
+
+                        //Test 1
+                        Console.WriteLine("\r\nTest Semaphore(5,5)#1\r\n");
+                        myClass.RunTest(MethodType.Semaphore, 5, 5);
+                        Console.ReadKey();
+
+                        //Test 2
+                        Console.WriteLine("\r\nTest Semaphore(1,5)#2\r\n");
+                        myClass.RunTest(MethodType.Semaphore, 1, 5);
+
+                        //Test 1
+                        Console.WriteLine("\r\nTest Locker#1\r\n");
+                        myClass.RunTest(MethodType.Locker);
+                        Console.ReadKey();
+
+                        //Test 2
+                        Console.WriteLine("\r\nTest Locker#2\r\n");
+                        myClass.RunTest(MethodType.Locker);
+                        break;
+                }
+
+            }
+            Console.ReadLine();
         }
 
-        public static void Write()
+        /*public static void Write()
         {
             lock (locker)
             {
@@ -146,6 +224,6 @@ namespace IteaThreads
                 {
                 }
             }
-        }
+        }*/
     }
 }
