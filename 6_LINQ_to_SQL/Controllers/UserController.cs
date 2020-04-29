@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IteaLinqToSql.Controllers
 {
-    [Route("api/user")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -26,7 +26,6 @@ namespace IteaLinqToSql.Controllers
             return service
                 .GetQuery()
                 .Include(x => x.Logins)
-                .Where(x => x.Logins.Count > 0)
                 .ToList();
         }
 
@@ -39,6 +38,7 @@ namespace IteaLinqToSql.Controllers
         [HttpPost("save")]
         public List<User> Post([FromBody] User value)
         {
+            service.Create(value);
             return service
                 .GetAll()
                 .Where(x => x.Email.Contains(value.Email) ||
@@ -55,6 +55,7 @@ namespace IteaLinqToSql.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            service.Delete(id);
         }
     }
 }

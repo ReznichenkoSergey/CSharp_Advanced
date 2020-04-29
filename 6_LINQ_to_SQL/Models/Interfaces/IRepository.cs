@@ -10,7 +10,7 @@ namespace IteaLinqToSql.Models.Interfaces
         T FindById(int id);
         IQueryable<T> Get(Expression<Func<T, bool>> predicate);
         IQueryable<T> GetAll();
-        void Remove(T item);
+        void Remove(int item);
         void Update(T item);
     }
 }

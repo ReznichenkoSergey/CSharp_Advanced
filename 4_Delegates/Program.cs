@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ITEA_Collections;
 using IteaDelegates.IteaMessanger;
 
@@ -62,18 +63,19 @@ namespace IteaDelegates
             Console.WriteLine();
             Console.WriteLine("* Sending a message ...\n");
 
-            Message message1 = null;
-            for (int i = 0; i < 10; i++)
-            {                
-                message1 = account1.CreateMessage($"Your value is {random.Next(100)}!!!!", account1);
-                account1.SendGroupMessage(message1, group1);
-                Console.WriteLine();
-            }
-            
-            Console.WriteLine("* Load messages from the group ...\n");
-            group1.ShowDialog();
+            IEnumerable<Worker> people = new List<Worker>();
 
-            Console.ReadLine();
+            IEnumerable<Person> objs = people;
+
+            // 1
+            Action<Person> showName = (p) => Console.WriteLine(p.Name);
+
+            Action<Worker> showWorkerName = showName;
+            
+            // 2
+            Action<Worker> showName1 = (p) => Console.WriteLine(p.Name);
+
+            // Action<Person> showWorkerName1 = showName1;
         }
 
         static void Method(object sender, EventArgs eventArgs) 

@@ -22,7 +22,7 @@ namespace IteaLinqToSql.Services
             Repository.Create(item);
         }
 
-        public void Delete(User item)
+        public void Delete(int item)
         {
             Repository.Remove(item);
         }

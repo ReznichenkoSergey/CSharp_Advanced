@@ -36,9 +36,9 @@ namespace IteaLinqToSql.Models.Abstract
             return dbSet.Where(predicate);
         }
 
-        public void Remove(T item)
+        public void Remove(int item)
         {
-            dbSet.Remove(item);
+            dbSet.Remove(FindById(item));
             dbContext.SaveChanges();
         }
 

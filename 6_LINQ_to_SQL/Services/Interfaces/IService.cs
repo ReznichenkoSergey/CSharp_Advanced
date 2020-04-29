@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using IteaLinqToSql.Models.Abstract;
 
 namespace IteaLinqToSql.Models.Interfaces
@@ -10,7 +11,7 @@ namespace IteaLinqToSql.Models.Interfaces
         List<T> GetAll();
         T FindById(int id);
         void Create(T item);
-        void Delete(T id);
+        void Delete(int id);
         T Update(int id, T updatedItem);
         IQueryable<T> GetQuery();
     }
